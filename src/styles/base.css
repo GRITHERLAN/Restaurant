@@ -1,0 +1,53 @@
+/* ===== Variables, reset y estilos base =====
+   Medidas en rem con base de 10px: html { font-size: 62.5% } => 1rem = 10px */
+:root {
+  /* Colores tomados del diseño (tema oscuro con acento ámbar/naranja) */
+  --fondo: #0e0e10;
+  --fondo-marron: #261d0e;
+  --superficie: #1a1a1d;
+  --superficie-2: #232327;
+  --borde: #34343a;
+  --texto: #f3f0ea;
+  --texto-suave: #b9b3a6;
+  --ambar: #f5a623;
+  --naranja: #ff5a1f;
+  --verde: #1fb980;
+  --rojo: #e5484d;
+  --radio: 0.8rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 62.5%; }
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  font-size: 1.6rem;
+  line-height: 1.5;
+  background: var(--fondo);
+  color: var(--texto);
+}
+
+#root { min-height: 100vh; display: flex; flex-direction: column; }
+#root > main { flex: 1; }
+
+h1, h2, h3 { line-height: 1.15; }
+h1 { font-size: 3.6rem; text-transform: uppercase; font-weight: 800; margin-bottom: 1.6rem; }
+h2 { font-size: 2.8rem; margin-bottom: 1.6rem; }
+h3 { font-size: 1.8rem; }
+p { margin-bottom: 1.2rem; color: var(--texto-suave); }
+a { color: var(--ambar); }
+img { max-width: 100%; display: block; }
+ul { list-style: none; }
+
+/* Contenedores centrados */
+.contenedor { width: 100%; max-width: 120rem; margin-inline: auto; padding-inline: 2rem; }
+.contenedor--medio { max-width: 90rem; }
+.contenedor--estrecho { max-width: 52rem; }
+
+.seccion { padding-block: 4rem; }
+
+@media (max-width: 600px) {
+  h1 { font-size: 2.8rem; }
+  h2 { font-size: 2.4rem; }
+}
