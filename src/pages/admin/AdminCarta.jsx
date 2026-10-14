@@ -1,5 +1,5 @@
 // Admin: CRUD de categorías y de platos de la carta.
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useAvisos } from "../../context/AvisosContext";
 import {
   borrarCategoria,
@@ -20,6 +20,8 @@ export default function AdminCarta() {
   const [platos, setPlatos] = useState([]);
   const [categoriaForm, setCategoriaForm] = useState(categoriaVacia);
   const [platoForm, setPlatoForm] = useState(platoVacio);
+  // Referencia al formulario de plato, para desplazarse hasta él al editar
+  const formularioPlatoRef = useRef(null);
 
   const cargar = useCallback(async () => {
     try {
@@ -107,6 +109,12 @@ export default function AdminCarta() {
     }
   }
 
+  // Carga el plato en el formulario y baja hasta él (el formulario está encima de la tabla)
+  function editarPlato(plato) {
+    setPlatoForm({ ...plato, imagen_url: plato.imagen_url || "" });
+    formularioPlatoRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   // Cambia disponibilidad rápidamente desde la lista (Pausar / Reactivar)
   async function alternarDisponible(plato) {
     try {
@@ -149,7 +157,7 @@ export default function AdminCarta() {
 
       <section aria-labelledby="titulo-platos">
         <h2 id="titulo-platos">Platos</h2>
-        <form className="formulario formulario--ancho" onSubmit={enviarPlato}>
+        <form ref={formularioPlatoRef} className="formulario formulario--ancho" onSubmit={enviarPlato}>
           <h3>{platoForm.id ? "Editar plato" : "Añadir nuevo plato"}</h3>
           <label>Nombre comercial
             <input required value={platoForm.nombre} onChange={(e) => setPlatoForm({ ...platoForm, nombre: e.target.value })} />
@@ -193,7 +201,7 @@ export default function AdminCarta() {
                   <td><span className={`insignia ${p.disponible ? "insignia--ok" : "insignia--error"}`}>{p.disponible ? "En carta" : "Pausado"}</span></td>
                   <td>
                     <div className="acciones">
-                      <button className="boton boton--secundario" onClick={() => { setPlatoForm({ ...p, imagen_url: p.imagen_url || "" }); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Editar</button>
+                      <button className="boton boton--secundario" onClick={() => editarPlato(p)}>Editar</button>
                       <button className="boton boton--secundario" onClick={() => alternarDisponible(p)}>{p.disponible ? "Pausar" : "Reactivar"}</button>
                       <button className="boton boton--peligro" onClick={() => eliminarPlato(p)}>Eliminar</button>
                     </div>
